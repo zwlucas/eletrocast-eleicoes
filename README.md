@@ -14,7 +14,7 @@ O mesmo é um sub-projeto do Eletrocast, um projeto do qual também faço parte.
 
 1. Clone o repositório:
     ```bash
-    git clone https://github.com/seu-usuario/eletrocast-eleicoes.git
+    git clone https://github.com/zwlucas/eletrocast-eleicoes.git
     ```
 2. Instale as dependências:
     ```bash
