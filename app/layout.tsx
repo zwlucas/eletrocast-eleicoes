@@ -9,7 +9,7 @@ const roboto = Roboto({
 });
 
 export const metadata: Metadata = {
-  title: "Justiça Eleitoral - Sistema de Votação",
+  title: "Justiça Eleitoral Estudantil",
   description: "Eleições Estudantis",
 };
 

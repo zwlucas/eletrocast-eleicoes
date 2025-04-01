@@ -57,7 +57,7 @@ export default function ListVotes() {
         <div className="mb-6 flex items-center justify-center">
           <div className="flex flex-col items-center">
             <div className="mb-2 text-center text-3xl font-bold text-[#004a93]">
-              JUSTIÇA ELEITORAL
+              JUSTIÇA ELEITORAL ESTUDANTIL
             </div>
             <div className="h-2 w-full bg-gradient-to-r from-[#009c3b] via-[#ffdf00] to-[#002776]"></div>
           </div>
