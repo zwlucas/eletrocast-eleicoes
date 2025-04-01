@@ -16,7 +16,6 @@ export default function ObrigadoPage() {
   const searchParams = useSearchParams();
   const rm = searchParams.get("rm") || "";
   const name = searchParams.get("nome") || "";
-  const cpf = searchParams.get("cpf") || "";
   const option = searchParams.get("option") || "";
 
   const [countdown, setCountdown] = useState(5);
@@ -28,7 +27,7 @@ export default function ObrigadoPage() {
   const hasRun = useRef(false);
 
   useEffect(() => {
-    if (!rm || !name || !cpf || !option) {
+    if (!rm || !name || !option) {
       window.location.href = "/";
       return;
     }
@@ -41,8 +40,7 @@ export default function ObrigadoPage() {
           {
             rm,
             name,
-            cpf: cpf.replace(/\D/g, ""),
-            option_voted: option,
+            option,
           },
         ]);
 
@@ -89,7 +87,7 @@ export default function ObrigadoPage() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [rm, name, cpf, option]);
+  }, [rm, name, option]);
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#f0f5fa] px-4 sm:px-6 lg:px-8">

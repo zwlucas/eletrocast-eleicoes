@@ -31,6 +31,9 @@ export default function ListVotes() {
         console.error("Erro ao procurar votos:", error);
         setSaveStatus("error");
 
+        setSieNumberVotes(0);
+        setLjNumberVotes(0);
+
         setErrorMessage(
           "Ocorreu um erro ao procurar votos. Por favor, informe ao responsável."
         );
@@ -39,11 +42,11 @@ export default function ListVotes() {
 
       setNumberVotes(data.length);
 
-      const sieData = data.filter((vote) => vote.option_voted == "SIE");
+      const sieData = data.filter((vote) => vote.option == "SIE");
       setSieNumberVotes(sieData.length);
 
       const ljData = data.filter(
-        (vote) => vote.option_voted == "Liderança Jovem"
+        (vote) => vote.option == "Liderança Jovem"
       );
       setLjNumberVotes(ljData.length);
     };
@@ -76,16 +79,19 @@ export default function ListVotes() {
                 className="flex h-40 flex-col items-center justify-center border-2 border-[#004a93] bg-white p-4 text-xl font-bold text-[#004a93] hover:bg-[#e6f0fa]"
                 variant="outline"
               >
-                <div className="mb-2 text-4xl">{sieNumberVotes}</div>
-                SIE
+                <div className="mb-2 text-4xl">{ljNumberVotes}</div>
+                Liderança Jovem
               </Button>
               <Button
                 className="flex h-40 flex-col items-center justify-center border-2 border-[#004a93] bg-white p-4 text-xl font-bold text-[#004a93] hover:bg-[#e6f0fa]"
                 variant="outline"
               >
-                <div className="mb-2 text-4xl">{ljNumberVotes}</div>
-                Liderança Jovem
+                <div className="mb-2 text-4xl">{sieNumberVotes}</div>
+                SIE
               </Button>
+            </div>
+            <div className="mt-4 text-center text-sm text-[#004a93]">
+              Votos totais: {numberVotes}
             </div>
             <div className="mt-4 text-center text-sm text-[#004a93]">
               Todos os dados são em tempo real!

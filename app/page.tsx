@@ -18,58 +18,28 @@ import { useRouter } from "next/navigation";
 export default function Home() {
   const [rm, setRm] = useState("");
   const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
   const [errors, setErrors] = useState<{
     rm?: string;
     nome?: string;
-    cpf?: string;
   }>({});
   const router = useRouter();
-
-  function validateCPF(cpf: string): boolean {
-    cpf = cpf.replace(/\D/g, "");
-
-    if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
-
-    const calc = (factor: number) =>
-      cpf
-        .split("")
-        .slice(0, factor - 1)
-        .reduce(
-          (sum, num, index) => sum + parseInt(num) * (factor - index),
-          0
-        ) %
-        11 <
-      2
-        ? 0
-        : 11 -
-          (cpf
-            .split("")
-            .slice(0, factor - 1)
-            .reduce(
-              (sum, num, index) => sum + parseInt(num) * (factor - index),
-              0
-            ) %
-            11);
-
-    return calc(10) === parseInt(cpf[9]) && calc(11) === parseInt(cpf[10]);
-  }
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
 
-    const newErrors: { rm?: string; nome?: string; cpf?: string } = {};
+    const newErrors: { rm?: string; nome?: string } = {};
 
     if (!/^\d{5}$/.test(rm)) {
       newErrors.rm = "O RM deve conter exatamente 5 dígitos numéricos.";
     }
 
-    if (!nome || nome.trim().length < 3) {
-      newErrors.nome = "Por favor, insira seu nome completo.";
+    const validPrefixes = ["22", "23", "24", "25"];
+    if (!validPrefixes.includes(rm.substring(0, 2))) {
+      newErrors.rm = "O RM não é valido";
     }
 
-    if (!validateCPF(cpf)) {
-      newErrors.cpf = "CPF inválido. Insira um CPF válido com 11 dígitos.";
+    if (!nome || nome.trim().length < 3) {
+      newErrors.nome = "Por favor, insira seu nome completo.";
     }
 
     if (Object.keys(newErrors).length > 0) {
@@ -79,149 +49,101 @@ export default function Home() {
 
     setErrors({});
 
-    router.push(
-      `/confirmar?rm=${rm}&nome=${encodeURIComponent(nome)}&cpf=${cpf}`
-    );
-  };
-
-  const formatCPF = (value: string) => {
-    const cpfClean = value.replace(/\D/g, "");
-    let formatted = cpfClean;
-
-    if (cpfClean.length > 3) {
-      formatted = cpfClean.substring(0, 3) + "." + cpfClean.substring(3);
-    }
-    if (cpfClean.length > 6) {
-      formatted = formatted.substring(0, 7) + "." + cpfClean.substring(6, 9);
-    }
-    if (cpfClean.length > 9) {
-      formatted = formatted.substring(0, 11) + "-" + cpfClean.substring(9, 11);
-    }
-
-    return formatted;
-  };
-
-  const handleCPFChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value;
-    const formatted = formatCPF(value);
-    setCpf(formatted);
-
-    if (errors.cpf) {
-      setErrors((prev) => ({ ...prev, cpf: undefined }));
-    }
+    router.push(`/confirmar?rm=${rm}&nome=${encodeURIComponent(nome)}`);
   };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#f0f5fa] px-4 sm:px-6 lg:px-8">
       <div className="w-full max-w-md">
-      <div className="mb-6 flex items-center justify-center">
-        <div className="flex flex-col items-center">
-        <div className="mb-2 text-center text-2xl sm:text-3xl font-bold text-[#004a93]">
-          JUSTIÇA ELEITORAL ESTUDANTIL
-        </div>
-        <div className="h-2 w-full bg-gradient-to-r from-[#009c3b] via-[#ffdf00] to-[#002776]"></div>
-        </div>
-      </div>
-
-      <Card className="border-2 border-[#004a93] shadow-lg overflow-hidden">
-        <CardHeader className="bg-[#004a93] text-center text-white">
-        <CardTitle className="text-xl sm:text-2xl">ELEIÇÕES ESTUDANTIS</CardTitle>
-        <CardDescription className="text-gray-100">
-          Identificação do Eleitor
-        </CardDescription>
-        </CardHeader>
-        <CardContent className="pt-6">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div className="space-y-2">
-          <label
-            htmlFor="rm"
-            className="text-sm font-medium text-[#004a93]"
-          >
-            Digite seu RM:
-          </label>
-          <Input
-            id="rm"
-            type="text"
-            value={rm}
-            onChange={(e) => {
-            setRm(e.target.value);
-            if (errors.rm) {
-              setErrors((prev) => ({ ...prev, rm: undefined }));
-            }
-            }}
-            placeholder="Digite os 5 dígitos do seu RM"
-            className="border-2 border-[#004a93]"
-            maxLength={5}
-          />
-          {errors.rm && (
-            <p className="text-sm text-red-500">{errors.rm}</p>
-          )}
+        <div className="mb-6 flex items-center justify-center">
+          <div className="flex flex-col items-center">
+            <div className="mb-2 text-center text-2xl sm:text-3xl font-bold text-[#004a93]">
+              JUSTIÇA ELEITORAL ESTUDANTIL
+            </div>
+            <div className="h-2 w-full bg-gradient-to-r from-[#009c3b] via-[#ffdf00] to-[#002776]"></div>
           </div>
-
-          <div className="space-y-2">
-          <label
-            htmlFor="nome"
-            className="text-sm font-medium text-[#004a93]"
-          >
-            Digite seu nome completo:
-          </label>
-          <Input
-            id="nome"
-            type="text"
-            value={nome}
-            onChange={(e) => {
-            setNome(e.target.value);
-            if (errors.nome) {
-              setErrors((prev) => ({ ...prev, nome: undefined }));
-            }
-            }}
-            placeholder="Digite seu nome completo"
-            className="border-2 border-[#004a93]"
-          />
-          {errors.nome && (
-            <p className="text-sm text-red-500">{errors.nome}</p>
-          )}
-          </div>
-
-          <div className="space-y-2">
-          <label
-            htmlFor="cpf"
-            className="text-sm font-medium text-[#004a93]"
-          >
-            Digite seu CPF:
-          </label>
-          <Input
-            id="cpf"
-            type="text"
-            value={cpf}
-            onChange={handleCPFChange}
-            placeholder="Digite seu CPF"
-            className="border-2 border-[#004a93]"
-            maxLength={14}
-          />
-          {errors.cpf && (
-            <p className="text-sm text-red-500">{errors.cpf}</p>
-          )}
-          </div>
-
-          <Button
-          type="submit"
-          className="w-full bg-[#004a93] text-white hover:bg-[#003a73]"
-          >
-          CONFIRMAR
-          </Button>
-        </form>
-        </CardContent>
-        <CardFooter className="flex justify-center border-t border-[#004a93] bg-[#f8f8f8] py-3 text-sm text-[#004a93] rounded-b-lg">
-        Seu voto é secreto e seguro.
-        </CardFooter>
-      </Card>
-
-      <div className="mt-4 flex justify-center">
-        <div className="text-center text-sm text-[#004a93]">
-        © {new Date().getFullYear()} Justiça Eleitoral Estudantil
         </div>
-      </div>
+
+        <Card className="border-2 border-[#004a93] shadow-lg overflow-hidden">
+          <CardHeader className="bg-[#004a93] text-center text-white">
+            <CardTitle className="text-xl sm:text-2xl">
+              ELEIÇÕES ESTUDANTIS
+            </CardTitle>
+            <CardDescription className="text-gray-100">
+              Identificação do Eleitor
+            </CardDescription>
+          </CardHeader>
+          <CardContent className="pt-6">
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-2">
+                <label
+                  htmlFor="rm"
+                  className="text-sm font-medium text-[#004a93]"
+                >
+                  Digite seu RM:
+                </label>
+                <Input
+                  id="rm"
+                  type="text"
+                  value={rm}
+                  onChange={(e) => {
+                    setRm(e.target.value);
+                    if (errors.rm) {
+                      setErrors((prev) => ({ ...prev, rm: undefined }));
+                    }
+                  }}
+                  placeholder="Digite os 5 dígitos do seu RM"
+                  className="border-2 border-[#004a93]"
+                  maxLength={5}
+                />
+                {errors.rm && (
+                  <p className="text-sm text-red-500">{errors.rm}</p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label
+                  htmlFor="nome"
+                  className="text-sm font-medium text-[#004a93]"
+                >
+                  Digite seu nome completo:
+                </label>
+                <Input
+                  id="nome"
+                  type="text"
+                  value={nome}
+                  onChange={(e) => {
+                    setNome(e.target.value);
+                    if (errors.nome) {
+                      setErrors((prev) => ({ ...prev, nome: undefined }));
+                    }
+                  }}
+                  placeholder="Digite seu nome completo"
+                  className="border-2 border-[#004a93]"
+                />
+                {errors.nome && (
+                  <p className="text-sm text-red-500">{errors.nome}</p>
+                )}
+              </div>
+
+              <Button
+                type="submit"
+                className="w-full bg-[#004a93] text-white hover:bg-[#003a73]"
+              >
+                CONFIRMAR
+              </Button>
+            </form>
+          </CardContent>
+          <CardFooter className="flex justify-center border-t border-[#004a93] bg-[#f8f8f8] py-3 text-sm text-[#004a93] rounded-b-lg">
+            Seu voto é secreto e seguro.
+          </CardFooter>
+        </Card>
+
+        <div className="mt-4 flex justify-center">
+          <div className="text-center text-sm text-[#004a93]">
+            © {new Date().getFullYear()} Justiça Eleitoral Estudantil
+          </div>
+        </div>
       </div>
     </div>
   );

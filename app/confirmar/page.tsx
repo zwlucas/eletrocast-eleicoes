@@ -18,48 +18,20 @@ export default function ConfirmPage() {
   const searchParams = useSearchParams();
   const rm = searchParams.get("rm") || "";
   const nome = searchParams.get("nome") || "";
-  const cpf = searchParams.get("cpf") || "";
 
   useEffect(() => {
-    if (!rm || !nome || !cpf) {
+    if (!rm || !nome) {
       router.push("/");
       return;
     }
-  }, [rm, nome, cpf, router]);
+  }, [rm, nome, router]);
 
   const handleConfirm = () => {
-    router.push(`/votar?rm=${rm}&nome=${encodeURIComponent(nome)}&cpf=${cpf}`);
+    router.push(`/votar?rm=${rm}&nome=${encodeURIComponent(nome)}`);
   };
 
   const handleCancel = () => {
     router.push("/");
-  };
-
-  const formatCPFDisplay = (cpf: string) => {
-    if (cpf.includes(".") || cpf.includes("-")) return cpf;
-
-    const cpfClean = cpf.replace(/\D/g, "");
-
-    if (cpfClean.length === 11) {
-      return `${cpfClean.substring(0, 3)}.${cpfClean.substring(
-        3,
-        6
-      )}.${cpfClean.substring(6, 9)}-${cpfClean.substring(9, 11)}`;
-    }
-
-    return cpf;
-  };
-
-  const maskCPF = (cpf: string) => {
-    const formatted = formatCPFDisplay(cpf);
-    const parts = formatted.split(".");
-    if (parts.length === 3) {
-      const lastPart = parts[2].split("-");
-      if (lastPart.length === 2) {
-        return `${parts[0]}.${parts[1]}.${"***"}-${lastPart[1]}`;
-      }
-    }
-    return formatted;
   };
 
   return (
@@ -98,13 +70,6 @@ export default function ConfirmPage() {
           </div>
           <div className="text-xs sm:text-sm font-bold text-[#004a93]">
             {nome}
-          </div>
-
-          <div className="text-xs sm:text-sm font-medium text-[#004a93]">
-            CPF:
-          </div>
-          <div className="text-xs sm:text-sm font-bold text-[#004a93]">
-            {maskCPF(cpf)}
           </div>
           </div>
         </div>

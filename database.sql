@@ -1,11 +1,9 @@
 CREATE TABLE votes (
-  id SERIAL PRIMARY KEY,
-  rm VARCHAR(5) NOT NULL,
+  rm VARCHAR(5) PRIMARY KEY,
   name VARCHAR(100) NOT NULL,
-  cpf VARCHAR(11) NOT NULL,
-  option_voted VARCHAR(50),
+  option VARCHAR(50),
   voted_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  UNIQUE(rm, cpf)
+  UNIQUE(rm, name)
 );
 
-CREATE INDEX idx_votes_rm_cpf ON votes(rm, cpf);
+CREATE INDEX idx_votes_rm_name ON votes(rm, name);
