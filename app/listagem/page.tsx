@@ -1,7 +1,5 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -10,60 +8,48 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { getSupabaseClient } from "@/lib/supabase";
+import { useEffect, useState } from "react";
 
-export default function VotarPage() {
-  const router = useRouter();
-  const searchParams = useSearchParams();
-  const rm = searchParams.get("rm") || "";
-  const nome = searchParams.get("nome") || "";
-  const cpf = searchParams.get("cpf") || "";
-  const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
+export default function ListVotes() {
+  const [numberVotes, setNumberVotes] = useState<number>();
+  const [sieNumberVotes, setSieNumberVotes] = useState<number>();
+  const [ljNumberVotes, setLjNumberVotes] = useState<number>();
+
+  const [saveStatus, setSaveStatus] = useState<"loading" | "success" | "error">(
+    "loading"
+  );
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    if (!rm || !nome || !cpf) {
-      router.push("/");
-      return;
-    }
+    const listVotes = async () => {
+      const supabase = getSupabaseClient();
 
-    // setAudioContext(
-    //   new (window.AudioContext || (window as any).webkitContext)()
-    // );
+      const { data, error } = await supabase.from("votes").select();
 
-    const audio = new Audio('/confirma.mp3')
-    setAudioElement(audio)
-  }, [rm, nome, cpf, router]);
+      if (error) {
+        console.error("Erro ao procurar votos:", error);
+        setSaveStatus("error");
 
-  const handleVote = (option: string) => {
-    setSelectedOption(option);
+        setErrorMessage(
+          "Ocorreu um erro ao procurar votos. Por favor, informe ao responsável."
+        );
+        return;
+      }
 
-    if (!audioElement) return;
-    audioElement.play()
+      setNumberVotes(data.length);
 
-    // if (!audioContext) return;
+      const sieData = data.filter((vote) => vote.option_voted == "SIE");
+      setSieNumberVotes(sieData.length);
 
-    // const oscillator = audioContext.createOscillator();
-    // const gainNode = audioContext.createGain();
-
-    // oscillator.type = "sine";
-    // oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
-    // gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-
-    // oscillator.connect(gainNode);
-    // gainNode.connect(audioContext.destination);
-
-    // oscillator.start();
-    // oscillator.stop(audioContext.currentTime + 0.2);
-
-    setTimeout(() => {
-      router.push(
-        `/obrigado?rm=${rm}&nome=${encodeURIComponent(
-          nome
-        )}&cpf=${cpf}&option=${option}`
+      const ljData = data.filter(
+        (vote) => vote.option_voted == "Liderança Jovem"
       );
-    }, 500);
-  };
+      setLjNumberVotes(ljData.length);
+    };
+
+    listVotes();
+  });
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-[#f0f5fa]">
@@ -79,7 +65,7 @@ export default function VotarPage() {
 
         <Card className="border-2 border-[#004a93] shadow-lg overflow-hidden">
           <CardHeader className="bg-[#004a93] text-center text-white">
-            <CardTitle className="text-2xl">SEU VOTO PARA</CardTitle>
+            <CardTitle className="text-2xl">VOTOS ATUAIS</CardTitle>
             <CardDescription className="text-gray-100">
               CHAPA DO GREMIO ESTUDANTIL
             </CardDescription>
@@ -87,24 +73,22 @@ export default function VotarPage() {
           <CardContent className="space-y-6 p-6 rounded-b-lg">
             <div className="grid grid-cols-2 gap-6">
               <Button
-                onClick={() => handleVote("SIE")}
                 className="flex h-40 flex-col items-center justify-center border-2 border-[#004a93] bg-white p-4 text-xl font-bold text-[#004a93] hover:bg-[#e6f0fa]"
                 variant="outline"
               >
-                <div className="mb-2 text-4xl">1</div>
+                <div className="mb-2 text-4xl">{sieNumberVotes}</div>
                 SIE
               </Button>
               <Button
-                onClick={() => handleVote("Liderança Jovem")}
                 className="flex h-40 flex-col items-center justify-center border-2 border-[#004a93] bg-white p-4 text-xl font-bold text-[#004a93] hover:bg-[#e6f0fa]"
                 variant="outline"
               >
-                <div className="mb-2 text-4xl">2</div>
+                <div className="mb-2 text-4xl">{ljNumberVotes}</div>
                 Liderança Jovem
               </Button>
             </div>
             <div className="mt-4 text-center text-sm text-[#004a93]">
-              Toque no quadro correspondente para VOTAR
+              Todos os dados são em tempo real!
             </div>
           </CardContent>
         </Card>
