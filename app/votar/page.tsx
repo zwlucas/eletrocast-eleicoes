@@ -18,7 +18,6 @@ export default function VotarPage() {
   const nome = searchParams.get("nome") || "";
   const cpf = searchParams.get("cpf") || "";
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
-  const [audioContext, setAudioContext] = useState<AudioContext | null>(null);
   const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
 
   useEffect(() => {
@@ -26,10 +25,6 @@ export default function VotarPage() {
       router.push("/");
       return;
     }
-
-    // setAudioContext(
-    //   new (window.AudioContext || (window as any).webkitContext)()
-    // );
 
     const audio = new Audio('/confirma.mp3')
     setAudioElement(audio)
@@ -40,21 +35,6 @@ export default function VotarPage() {
 
     if (!audioElement) return;
     audioElement.play()
-
-    // if (!audioContext) return;
-
-    // const oscillator = audioContext.createOscillator();
-    // const gainNode = audioContext.createGain();
-
-    // oscillator.type = "sine";
-    // oscillator.frequency.setValueAtTime(1000, audioContext.currentTime);
-    // gainNode.gain.setValueAtTime(0.5, audioContext.currentTime);
-
-    // oscillator.connect(gainNode);
-    // gainNode.connect(audioContext.destination);
-
-    // oscillator.start();
-    // oscillator.stop(audioContext.currentTime + 0.2);
 
     setTimeout(() => {
       router.push(
