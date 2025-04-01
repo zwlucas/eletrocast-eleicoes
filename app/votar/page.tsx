@@ -26,7 +26,7 @@ export default function VotarPage() {
       return;
     }
 
-    const audio = new Audio('/confirma.mp3')
+    const audio = new Audio('/aperta.mp3')
     setAudioElement(audio)
   }, [rm, nome, cpf, router]);
 
