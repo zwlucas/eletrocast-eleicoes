@@ -27,17 +27,10 @@ export default function ObrigadoPage() {
 
   const hasRun = useRef(false);
 
-  const [audioElement, setAudioElement] = useState<HTMLAudioElement>()
-
   useEffect(() => {
     if (!rm || !name || !cpf || !option) {
       window.location.href = "/";
       return;
-    }
-
-    if (!audioElement) {
-      const audio = new Audio('/confirma.mp3')
-      setAudioElement(audio)
     }
 
     const saveVote = async () => {
@@ -70,8 +63,6 @@ export default function ObrigadoPage() {
         }
 
         setSaveStatus("success");
-        if (!audioElement) return;
-        audioElement.play();
       } catch (error) {
         console.error("Erro ao salvar voto:", error);
         setSaveStatus("error");
