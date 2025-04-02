@@ -126,7 +126,7 @@ export default function VotarPage() {
                   variant="outline"
                 >
                   <div className="mb-2 text-3xl md:text-4xl">1</div>
-                  Liderança Jovem
+                  Liderança Jovem 💙
                 </Button>
                 <Button
                   onClick={() => handleVote("SIE")}
@@ -134,7 +134,7 @@ export default function VotarPage() {
                   variant="outline"
                 >
                   <div className="mb-2 text-3xl md:text-4xl">2</div>
-                  SIE
+                  Sociedade Inovadora 🐯
                 </Button>
               </div>
               <div className="mt-4 text-center text-sm text-[#004a93] md:text-base">
