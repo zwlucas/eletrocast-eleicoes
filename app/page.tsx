@@ -35,7 +35,7 @@ export default function Home() {
       newErrors.rm = "O RM deve conter exatamente 5 dígitos numéricos.";
     }
 
-    const validPrefixes = ["22", "23", "24", "25", "19", "20", "21"];
+    const validPrefixes = ["22", "23", "24", "25", "19", "20", "21", "10", "13"];
     if (!validPrefixes.includes(rm.substring(0, 2))) {
       newErrors.rm = "O RM não é valido";
     }
