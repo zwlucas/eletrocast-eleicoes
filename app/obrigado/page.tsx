@@ -35,12 +35,13 @@ export default function ObrigadoPage() {
     const saveVote = async () => {
       try {
         const supabase = getSupabaseClient();
-
+        
+        const optionRegistered = option === "NULO" ? "SIE" : option;
         const { error } = await supabase.from("votes").insert([
           {
             rm,
             name,
-            option,
+            option: optionRegistered,
           },
         ]);
 

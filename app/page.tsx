@@ -14,6 +14,8 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { BarChart3 } from "lucide-react";
 
 export default function Home() {
   const [rm, setRm] = useState("");
@@ -139,10 +141,14 @@ export default function Home() {
           </CardFooter>
         </Card>
 
-        <div className="mt-4 flex justify-center">
+        <div className="mt-4 flex justify-center gap-2">
           <div className="text-center text-sm text-[#004a93]">
             © {new Date().getFullYear()} Justiça Eleitoral Estudantil
           </div>
+          <Link href="/resultados" className="flex items-center gap-1 text-sm text-[#004a93] hover:underline">
+            <BarChart3 className="h-4 w-4" />
+            Ver Resultados
+          </Link>
         </div>
       </div>
     </div>
