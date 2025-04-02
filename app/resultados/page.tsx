@@ -146,8 +146,9 @@ export default function Home() {
                               {opcao}
                             </span>
                             <span className="text-sm font-bold text-[#004a93] sm:text-base">
-                              {results.options[opcao].votes} votos (
-                              {results.options[opcao].percentage}%)
+                              {/* {results.options[opcao].votes} votos (
+                              {results.options[opcao].percentage}%) */}
+                              {results.options[opcao].percentage}%
                             </span>
                           </div>
                           <div className="h-4 w-full overflow-hidden rounded-full bg-gray-200 sm:h-6">
