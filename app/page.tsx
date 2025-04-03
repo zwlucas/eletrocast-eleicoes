@@ -148,10 +148,10 @@ export default function Home() {
           <div className="text-center text-sm text-[#004a93]">
             © {new Date().getFullYear()} Justiça Eleitoral Estudantil
           </div>
-          {/* <Link href="/resultados" className="flex items-center gap-1 text-sm text-[#004a93] hover:underline">
+          <Link href="/resultados" className="flex items-center gap-1 text-sm text-[#004a93] hover:underline">
             <BarChart3 className="h-4 w-4" />
             Ver Resultados
-          </Link> */}
+          </Link>
         </div>
       </div>
     </div>
