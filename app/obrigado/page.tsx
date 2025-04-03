@@ -36,12 +36,11 @@ export default function ObrigadoPage() {
       try {
         const supabase = getSupabaseClient();
         
-        const optionRegistered = option === "NULO" ? "SIE" : option;
         const { error } = await supabase.from("votes").insert([
           {
             rm,
             name,
-            option: optionRegistered,
+            option: option,
           },
         ]);
 
