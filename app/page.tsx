@@ -77,9 +77,9 @@ export default function Home() {
           </CardHeader>
           <CardContent className="pt-6">
             <div className="space-y-2">
-              <p>As eleições foram encerradas, obrigado pelo seu voto!</p>
-            </div>
-            {/* <form onSubmit={handleSubmit} className="space-y-4">
+              {/* <p>As eleições foram encerradas, obrigado pelo seu voto!</p>
+            </div> */}
+            <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
                 <label
                   htmlFor="rm"
@@ -137,7 +137,7 @@ export default function Home() {
               >
                 CONFIRMAR
               </Button>
-            </form> */}
+            </form>
           </CardContent>
           <CardFooter className="flex justify-center border-t border-[#004a93] bg-[#f8f8f8] py-3 text-sm text-[#004a93] rounded-b-lg">
             Seu voto é secreto e seguro.
