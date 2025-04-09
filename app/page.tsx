@@ -76,8 +76,8 @@ export default function Home() {
             </CardDescription>
           </CardHeader>
           <CardContent className="pt-6">
-            <div className="space-y-2">
-              {/* <p>As eleições foram encerradas, obrigado pelo seu voto!</p>
+            {/* <div className="space-y-2">
+              <p>As eleições foram encerradas, obrigado pelo seu voto!</p>
             </div> */}
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-2">
